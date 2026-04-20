@@ -1,0 +1,45 @@
+{
+  "$ref": "#/definitions/lessons",
+  "definitions": {
+    "lessons": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "order": {
+          "type": "number"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "lesson",
+            "exercises",
+            "extra"
+          ]
+        },
+        "lesson": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "duration": {
+          "type": "string"
+        },
+        "$schema": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "title",
+        "order",
+        "type",
+        "lesson",
+        "slug"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}

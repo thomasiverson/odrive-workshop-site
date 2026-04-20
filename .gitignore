@@ -1,0 +1,16 @@
+# build output
+dist/
+
+# dependencies
+node_modules/
+
+# synced content (generated at build time)
+src/content/lessons/
+public/images/lessons/
+
+# environment variables
+.env
+.env.production
+
+# macOS
+.DS_Store

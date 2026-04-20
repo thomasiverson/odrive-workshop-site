@@ -1,0 +1,266 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'ODrive Copilot Workshop Lessons' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href={base} class="logo">
+          <span class="logo-icon">⚡</span>
+          <span>ODrive Workshop</span>
+        </a>
+        <a href="https://github.com/thomasiverson/ODrive-Custom" target="_blank" rel="noopener" class="gh-link">
+          GitHub
+        </a>
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer>
+      <p>GitHub Copilot Workshop &mdash; ODrive Embedded C++ Edition</p>
+    </footer>
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: #0d1117;
+    --bg-surface: #161b22;
+    --bg-surface-hover: #1c2128;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #7d8590;
+    --accent: #58a6ff;
+    --accent-emphasis: #1f6feb;
+    --green: #3fb950;
+    --orange: #d29922;
+    --red: #f85149;
+    --purple: #bc8cff;
+    --max-width: 900px;
+    --sidebar-width: 260px;
+  }
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Noto Sans, Helvetica, Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0.75rem 1.5rem;
+  }
+
+  header nav {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+
+  .logo-icon {
+    font-size: 1.4rem;
+  }
+
+  .gh-link {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.15s;
+  }
+
+  .gh-link:hover {
+    color: var(--accent);
+  }
+
+  main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+    min-height: calc(100vh - 130px);
+  }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 1.5rem;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  a:hover {
+    text-decoration: underline;
+  }
+
+  /* Markdown content styles */
+  .content h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .content h2 {
+    font-size: 1.5rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .content h3 {
+    font-size: 1.25rem;
+    margin-top: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content h4 {
+    font-size: 1.1rem;
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .content p {
+    margin-bottom: 1rem;
+  }
+
+  .content ul, .content ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+  }
+
+  .content li {
+    margin-bottom: 0.35rem;
+  }
+
+  .content code {
+    background: var(--bg-surface);
+    padding: 0.15em 0.35em;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'Cascadia Code', 'Fira Code', Consolas, monospace;
+  }
+
+  .content pre {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    overflow-x: auto;
+  }
+
+  .content pre code {
+    background: none;
+    padding: 0;
+    font-size: 0.85em;
+    line-height: 1.5;
+  }
+
+  .content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .content th {
+    background: var(--bg-surface);
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border);
+    font-weight: 600;
+  }
+
+  .content td {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--border);
+  }
+
+  .content blockquote {
+    border-left: 3px solid var(--accent);
+    padding: 0.5rem 1rem;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    border-radius: 0 6px 6px 0;
+  }
+
+  .content blockquote p {
+    margin-bottom: 0;
+  }
+
+  .content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+
+  .content details {
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    background: var(--bg-surface);
+  }
+
+  .content summary {
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .content details[open] summary {
+    margin-bottom: 0.75rem;
+  }
+
+  .content hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+</style>

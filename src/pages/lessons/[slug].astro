@@ -1,0 +1,52 @@
+---
+import Lesson from '../../layouts/Lesson.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const allLessons = await getCollection('lessons');
+
+  // Get sorted main lessons for prev/next nav
+  const mainLessons = allLessons
+    .filter(e => e.data.type === 'lesson')
+    .sort((a, b) => a.data.order - b.data.order);
+
+  // Build exercises lookup
+  const exercisesMap = new Map();
+  for (const entry of allLessons) {
+    if (entry.data.type === 'exercises') {
+      exercisesMap.set(entry.data.lesson, entry.data.slug);
+    }
+  }
+
+  return allLessons.map((entry) => {
+    const mainIndex = mainLessons.findIndex(m => m.data.lesson === entry.data.lesson);
+    const prev = mainIndex > 0 ? mainLessons[mainIndex - 1] : null;
+    const next = mainIndex < mainLessons.length - 1 ? mainLessons[mainIndex + 1] : null;
+
+    return {
+      params: { slug: entry.data.slug },
+      props: {
+        entry,
+        prevLesson: prev ? { slug: prev.data.slug, title: prev.data.title } : null,
+        nextLesson: next ? { slug: next.data.slug, title: next.data.title } : null,
+        exercisesSlug: exercisesMap.get(entry.data.lesson) || null,
+      },
+    };
+  });
+}
+
+const { entry, prevLesson, nextLesson, exercisesSlug } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Lesson
+  title={entry.data.title}
+  order={entry.data.order}
+  type={entry.data.type}
+  duration={entry.data.duration}
+  prevLesson={prevLesson}
+  nextLesson={nextLesson}
+  exercisesSlug={exercisesSlug}
+>
+  <Content />
+</Lesson>
