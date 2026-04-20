@@ -16,6 +16,7 @@ const lessons = defineCollection({
     type: z.enum(['lesson', 'exercises', 'extra']),
     lesson: z.string(),
     slug: z.string(),
+    description: z.string().optional(),
     duration: z.string().optional(),
   }),
 });

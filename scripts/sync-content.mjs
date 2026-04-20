@@ -99,6 +99,30 @@ function extractFirstH1(content) {
   return match ? match[1].trim() : null;
 }
 
+function extractDescription(content) {
+  // Find the first non-empty paragraph after the H1 heading
+  // Skip lines that are headings, list items, tables, images, or HTML
+  const lines = content.split('\n');
+  let pastH1 = false;
+  for (const line of lines) {
+    const trimmed = line.trim();
+    if (!pastH1) {
+      if (trimmed.startsWith('# ')) pastH1 = true;
+      continue;
+    }
+    if (!trimmed) continue;
+    if (trimmed.startsWith('#')) continue;
+    if (trimmed.startsWith('-') || trimmed.startsWith('*') || trimmed.startsWith('|')) continue;
+    if (trimmed.startsWith('!') || trimmed.startsWith('<')) continue;
+    if (trimmed.startsWith('```')) continue;
+    if (trimmed.startsWith('>')) continue;
+    // Found a paragraph line — clean markdown formatting and truncate
+    const clean = trimmed.replace(/\*\*([^*]+)\*\*/g, '$1').replace(/`([^`]+)`/g, '$1').replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
+    return clean.length > 160 ? clean.slice(0, 157) + '...' : clean;
+  }
+  return '';
+}
+
 // ---------------------------------------------------------------------------
 // Process each lesson
 // ---------------------------------------------------------------------------
@@ -129,9 +153,10 @@ for (const folder of lessonFolders) {
       fileSuffix = '-slides';
     }
 
-    // Extract or generate title
+    // Extract or generate title and description
     const h1Title = extractFirstH1(content);
     const title = h1Title || titleCase(meta.rawTitle);
+    const description = type === 'lesson' ? extractDescription(content) : '';
 
     // Build frontmatter if not present
     const hasFrontmatter = content.trimStart().startsWith('---');
@@ -144,6 +169,7 @@ for (const folder of lessonFolders) {
         `type: "${type}"`,
         `lesson: "${lessonSlug}"`,
         `slug: "${lessonSlug}${fileSuffix}"`,
+        `description: "${description.replace(/"/g, '\\"')}"`,
         duration,
         '---',
         '',
